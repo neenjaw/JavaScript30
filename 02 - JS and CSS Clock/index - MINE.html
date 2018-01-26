@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand minute-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+
+  <style>
+    html {
+      background:#018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+      background-size:cover;
+      font-family:'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display:flex;
+      flex:1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border:20px solid white;
+      border-radius:50%;
+      margin:50px auto;
+      position: relative;
+      padding:2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px); /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width:50%;
+      height:6px;
+      background:black;
+      position: absolute;
+      top:50%;
+      transform-origin: right center;
+      transform: rotate(0deg);
+    }
+
+    .ht {
+      transition: transform 0.2s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+
+  </style>
+
+  <script>
+  function getRotationAmount(fraction) {
+    let adjustment = 90;
+
+    let position = fraction * 360 + 90;
+
+    if (position > 360) {
+      position = position - 360;
+    }
+
+    return position;
+  }
+
+  function rotateElement(selector, rotation) {
+    let element = document.querySelector(selector);
+    let currentRotation = element.style.transform;
+
+    let regex = /rotate\((.*?)deg\)/;
+
+    currentRotation = currentRotation.match(regex);
+
+    if (!currentRotation) {
+      currentRotation = 0;
+    } else {
+      currentRotation = currentRotation[1];
+    }
+
+    if (rotation < currentRotation) element.classList.remove("ht");
+
+    element.style.transform = `rotate(${rotation}deg)`;
+
+    if (rotation < currentRotation) setTimeout(() => { element.classList.add("ht"); }, 50);
+    
+    // console.log(selector + " >> "+ currentRotation);
+  }
+
+  function rotateSecondHand(d) {
+    let seconds = d.getSeconds(),
+        travel = seconds / 60,
+        rotation = getRotationAmount(travel);
+
+    rotateElement(".second-hand", rotation);
+  }
+
+  function rotateMinuteHand(d) {
+    let minutes = d.getMinutes(),
+        travel = minutes / 60,
+        rotation = getRotationAmount(travel);
+
+    rotateElement(".minute-hand", rotation);
+  }
+
+  function rotateHourHand(d) {
+    let hours = d.getHours(),
+        travel = hours / 12,
+        rotation = getRotationAmount(travel);
+
+    rotateElement(".hour-hand", rotation);
+  }
+
+  function runClock() {
+    let time = new Date();
+
+    rotateSecondHand(time);
+    rotateMinuteHand(time);
+    rotateHourHand(time);
+  }
+
+  runClock();
+
+  Array.from(document.querySelectorAll('.hand')).forEach((e, i) => {
+    e.classList.add("ht");
+  });
+
+  setInterval(runClock, 1000);
+
+  </script>
+</body>
+</html>
