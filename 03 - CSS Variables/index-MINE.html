@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <style>
+
+    /*
+      misc styles, nothing to do with CSS variables
+    */
+
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    img {
+      border: var(--spacing) solid var(--base); 
+      filter: blur(var(--blur));
+    }
+
+    input {
+      width:100px;
+    }
+
+    input[type="color"] {
+      padding: 1px;
+    }
+  </style>
+
+  <script>
+    let spacingInput = document.getElementById("spacing"),
+           blurInput = document.getElementById("blur"),
+          colorInput = document.getElementById("base");
+    
+    spacingInput.value = getComputedStyle(document.documentElement).getPropertyValue("--spacing").replace(/[^0-9]/g, '');
+       blurInput.value = getComputedStyle(document.documentElement).getPropertyValue("--blur").replace(/[^0-9]/g, '');
+      colorInput.value = getComputedStyle(document.documentElement).getPropertyValue("--base").trim();
+
+
+    spacingInput.addEventListener("input", (event) => {
+      let val = spacingInput.value; 
+      let unit = spacingInput.dataset.sizing || "";
+
+      document.documentElement.style.setProperty("--spacing", `${val}${unit}`);
+    });
+
+    blurInput.addEventListener("input", (event) => {
+      let val = blurInput.value; 
+      let unit = blurInput.dataset.sizing || "";
+
+      document.documentElement.style.setProperty("--blur", `${val}${unit}`);
+    });
+
+    colorInput.addEventListener("change", (event) => {
+      let val = colorInput.value; 
+
+      document.documentElement.style.setProperty("--base", `${val}`);
+    });
+  </script>
+
+</body>
+</html>
