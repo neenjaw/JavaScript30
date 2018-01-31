@@ -38,7 +38,7 @@
       margin: 0;
       padding: 0;
       position: relative;
-      /*perspective:20px;*/
+      /* perspective:20px; */
     }
     .suggestions li {
       background:white;
@@ -48,9 +48,19 @@
       margin:0;
       padding:20px;
       transition:background 0.2s;
+
+      /* For my solution, I hid these from the original:
       display:flex;
       justify-content:space-between;
+      */
+      display:flex;
+      justify-content:space-between;
+      /*
+      */
+      
+      text-align: center;
       text-transform: capitalize;
+      transition: all 1s linear;
     }
 
     .suggestions li:nth-child(even) {
@@ -60,6 +70,10 @@
     .suggestions li:nth-child(odd) {
       transform: perspective(100px) rotateX(-3deg) translateY(3px);
       background: linear-gradient(to top,  #ffffff 0%,#EFEFEF 100%);
+    }
+
+    .suggestions.active li:nth-child(-n+2) {
+      display: none;
     }
 
     span.population {

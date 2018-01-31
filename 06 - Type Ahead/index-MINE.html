@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+// MY SOLUTION
+
+// const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+// const cities = [];
+// const input = document.querySelector(".search");
+// const suggestionContainer = document.querySelector(".suggestions");
+//
+// fetch(endpoint)
+//   .then((response) => response.json())
+//   .then((data) => cities.push(...data));
+//
+// function createListItem(text, matchingText) {
+//   let re =  new RegExp(`(${matchingText})`, "ig");
+//   let inner = text.replace(re, `<span class="hl">$1</span>`);
+//
+//   let li = document.createElement("li");
+//   li.innerHTML = inner;
+//
+//   return li;
+// }
+//
+// function removeSuggestions() {
+//   let children = Array.from(suggestionContainer.children);
+//
+//   for (var i = 2; i < children.length; i++) {
+//     suggestionContainer.removeChild(children[i]);
+//   }
+// }
+//
+// function updateSuggestions(query) {
+//   let re = new RegExp(query, "ig");
+//
+//   let filteredCities = cities.filter((element) => {
+//     return element.city.match(re);
+//   });
+//
+//   let fragment = document.createDocumentFragment();
+//
+//   filteredCities.forEach((e) => {
+//     let li = createListItem(e.city, query);
+//
+//     fragment.appendChild(li);
+//   });
+//
+//   suggestionContainer.appendChild(fragment);
+// }
+//
+// input.addEventListener("keyup", function(event) {
+//   let query = this.value;
+//   let letters = query.replace(/\s/g, "");
+//
+//   if ( letters.length < 1 ) {
+//     suggestionContainer.classList.remove("active");
+//   } else {
+//     suggestionContainer.classList.add("active");
+//   }
+//
+//   if (letters.length >= 3) {
+//     removeSuggestions();
+//     updateSuggestions(query);
+//   } else {
+//     if (suggestionContainer.children.length > 2) {
+//       removeSuggestions();
+//     }
+//   }
+// });
+
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const cities = [];
+
+fetch(endpoint)
+  .then((response) => response.json())
+  .then((data) => cities.push(...data));
+
+function findMatches(wordToMatch, cities) {
+  return cities.filter(place => {
+    let re = new RegExp(wordToMatch, "gi");
+    return place.city.match(re) || place.state.match(re);
+  });
+}
+
+function numberWithCommas(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function displayMatches() {
+  const matchArray = findMatches(this.value, cities);
+  const html = matchArray.map(place => {
+    const re = new RegExp(`(${this.value})`, "gi");
+    const cityName = place.city.replace(re, `<span class="hl">$1</span>`);
+    const stateName = place.state.replace(re, `<span class="hl">$1</span>`);
+
+    return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `;
+  }).join('');
+  suggestions.innerHTML = html;
+}
+
+const searchInput = document.querySelector(".search");
+const suggestions = document.querySelector(".suggestions");
+
+searchInput.addEventListener('change', displayMatches);
+searchInput.addEventListener('keyup', displayMatches);
+
+</script>
+  </body>
+</html>
