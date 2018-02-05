@@ -50,7 +50,7 @@ video.onpause = function () {
     // add event listener and handler function to skip in the video
     skipButton.forEach((button) => {
         button.addEventListener("click", function (event) {
-            let skipTime = parseInt(this.dataset['skip']);
+            let skipTime = parseInt(this.dataset.skip);
             
             video.currentTime = video.currentTime + skipTime;
         });

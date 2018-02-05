@@ -7,6 +7,83 @@
 </head>
 <body>
 <script>
+const konami = (function (params) {
+
+  // variable declarations
+  let keyQueue,
+      keySecret,
+      onMatch;
+
+  // add a key to the comparison
+  function pushKey(key) {
+    if (typeof key !== "string") return {error: true, msg: "please push the string representation of the key"};
+
+    keyQueue.push(key);
+
+    if (keyQueue.length > keySecret.length) {
+      keyQueue.shift();
+    }
+    
+    if (keyQueue.length === keySecret.length) {
+      let match = true;
+
+      for (let index = 0; index < keyQueue.length; index++) {
+        if (keyQueue[index] !== keySecret[index]) {
+          match = false;
+          break;
+        }
+      }
+
+      if (match) {
+        keyQueue = [];
+        onMatch();
+      }
+    } 
+  }
+
+  // create a copy of the array to return
+  function getSecret() {
+    return keySecret.map(element => element);
+  }
+
+  // create a copy of the array to return
+  function getQueue() {
+    return keyQueue.map(element => element);
+  }
+
+  // create the key code logger, initialize variables
+  function init(params) {
+    params = params || {};
+
+    keyQueue  = [];
+    keySecret = params.keySecret || ["ArrowUp", "ArrowDown", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "a", "b", "Enter"];
+    onMatch   = params.onMatch || (function () { console.log("MATCH! K.O.!"); });
+  }
+
+  //initialize to defaults
+  init();
+
+  //expose the methods
+  return {
+    init,
+    pushKey,
+    getSecret,
+    getQueue
+  };
+}());
+
+// re-initialize the key code logger, add the new match function to execute
+konami.init({
+  onMatch: cornify_add
+});
+
+// when key is released, push it to the logger
+document.addEventListener("keyup", function(e) {
+  // console.log(e.key);
+
+  konami.pushKey(e.key);
+});
+
 </script>
 </body>
 </html>
