@@ -68,20 +68,22 @@
       let elemTopY = element.offsetTop,
           elemBottomY = elemTopY + element.offsetHeight
 
-      console.log(element);
-      console.log(`Window  > Top: ${innerTopY}\t | Bottom: ${innerBottomY}`);
-      console.log(`Element > Top: ${elemTopY}\t | Bottom: ${elemBottomY}`);
+      // console.log(element);
+      // console.log(`Window  > Top: ${innerTopY}\t | Bottom: ${innerBottomY}`);
+      // console.log(`Element > Top: ${elemTopY}\t | Bottom: ${elemBottomY}`);
 
       let visible = (innerBottomY > elemTopY) && (innerTopY < elemBottomY);
 
-      console.log(`Visible > ${visible}`);
+      // console.log(`Visible > ${visible}`);
       
       return visible; 
 
     }
 
+    window.addEventListener("scroll", debounce(scrollHandler));
+    
     function scrollHandler() {
-      console.clear();
+      // console.clear();
 
       imgs.forEach(img => {
         if (isElementVisible(img)) {
@@ -91,9 +93,6 @@
         }
       });
     }
-
-    window.addEventListener("scroll", debounce(scrollHandler));
-
   </script>
 
   <style>
