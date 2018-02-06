@@ -43,6 +43,8 @@
   </div>
 
   <script>
+    const imgs = document.querySelectorAll(".slide-in");
+
     function debounce(func, wait = 20, immediate = true) {
       var timeout;
       return function() {
@@ -57,6 +59,40 @@
         if (callNow) func.apply(context, args);
       };
     }
+
+    function isElementVisible(element) {
+      let innerTopY = window.scrollY,
+          innerHeight = window.innerHeight,
+          innerBottomY = innerTopY + innerHeight;
+
+      let elemTopY = element.offsetTop,
+          elemBottomY = elemTopY + element.offsetHeight
+
+      console.log(element);
+      console.log(`Window  > Top: ${innerTopY}\t | Bottom: ${innerBottomY}`);
+      console.log(`Element > Top: ${elemTopY}\t | Bottom: ${elemBottomY}`);
+
+      let visible = (innerBottomY > elemTopY) && (innerTopY < elemBottomY);
+
+      console.log(`Visible > ${visible}`);
+      
+      return visible; 
+
+    }
+
+    function scrollHandler() {
+      console.clear();
+
+      imgs.forEach(img => {
+        if (isElementVisible(img)) {
+          img.classList.add("active");
+        } else {
+          img.classList.remove("active");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", debounce(scrollHandler));
 
   </script>
 
