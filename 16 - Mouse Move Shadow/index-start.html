@@ -11,6 +11,12 @@
   </div>
 
   <style>
+  :root {
+    --max-walk: 100px;
+    --shadow-x: var(--max-walk);
+    --shadow-y: var(--max-walk); 
+  }
+
   html {
     color:black;
     font-family: sans-serif;
@@ -29,12 +35,38 @@
   }
 
   h1 {
-    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    text-shadow: var(--shadow-x) var(--shadow-y) 3px rgba(255, 255, 0, 0.5),
+                 calc(-1 * var(--shadow-x)) var(--shadow-y) 3px rgba(255, 0, 0, 0.5),
+                 var(--shadow-x) calc(-1 * var(--shadow-y)) 3px rgba(0,255,0,0.5),
+                 calc(-1 * var(--shadow-x)) calc(-1 * var(--shadow-y)) 3px rgba(0,0,255,0.5);
     font-size: 100px;
   }
   </style>
 
 <script>
+  const hero = document.querySelector('.hero');
+  const text = hero.querySelector('h1');
+  const walk = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--max-walk").replace(/[^0-9]/g,''));
+
+
+  function shadow(e) {
+    const { offsetWidth: width, offsetHeight: height } = hero;
+    let { offsetX: x, offsetY: y } = e;
+
+    if (this !== e.target) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+    
+    const xWalk = Math.round(x / width * walk);
+    const yWalk = Math.round(y / height * walk);
+
+    document.documentElement.style.setProperty("--shadow-x", `${xWalk}px`);
+    document.documentElement.style.setProperty("--shadow-y", `${yWalk}px`);
+
+  }
+
+  hero.addEventListener('mousemove', shadow);
 </script>
 </body>
 </html>
