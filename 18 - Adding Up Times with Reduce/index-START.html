@@ -211,16 +211,9 @@
     return `${minutes}:${ ('0' + seconds).slice(-2) }`;
   }
 
-  // let videoTimes = [...videoList.querySelectorAll('li')].map(video => video.dataset.time); 2n
   let runtime = Array
-    .from(
-      videoList.querySelectorAll('[data-time]'),
-      (video => video.dataset.time)
-      )
-    .reduce(
-      ((accumulator, current) => addTimes(accumulator, current)), 
-      '00:00'
-      );
+    .from( videoList.querySelectorAll('[data-time]'), (video => video.dataset.time) )
+    .reduce(addTimes, '00:00');
 </script>
 </body>
 </html>
