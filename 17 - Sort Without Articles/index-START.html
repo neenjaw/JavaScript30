@@ -46,7 +46,8 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 const articles = ['the', 'an', 'a'];
-const re = new RegExp(articles.join('|'));
+const re = new RegExp('^(' + articles.join('|') + ') ', 'i');
+const searchBands = Array.from(bands, band => String.prototype.replace.call(band, re, ''));
 
 </script>
 
