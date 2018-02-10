@@ -58,8 +58,12 @@
       y = y + e.target.offsetTop;
     }
     
-    const xWalk = Math.round(x / width * walk);
-    const yWalk = Math.round(y / height * walk);
+    let halfX = width / 2;
+    const xWalk = Math.round((x - halfX) / halfX * walk);
+
+    let halfY = height / 2;
+    const yWalk = Math.round((y - halfY) / halfY * walk);
+
 
     document.documentElement.style.setProperty("--shadow-x", `${xWalk}px`);
     document.documentElement.style.setProperty("--shadow-y", `${yWalk}px`);
