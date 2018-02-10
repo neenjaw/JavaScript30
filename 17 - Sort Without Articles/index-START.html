@@ -44,19 +44,36 @@
   <ul id="bands"></ul>
 
 <script>
+  // const searchBands = Array.from(bands, band => String.prototype.replace.call(band, re, ''));
+  
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
-// const articles = ['the', 'an', 'a'];
-// const searchBands = Array.from(bands, band => String.prototype.replace.call(band, re, ''));
+const articles = ['the', 'an', 'a'];
+
   
 const re = new RegExp('^(' + articles.join('|') + ') ', 'i');
-const search = bands.map(band => {
+const sortableBands = bands.map(band => {
   return {
     band,
-    paredDownBand: band.replace(re, '')
+    paredDown: band.replace(re, '')
   };
 });
-
+  
+function bandSort(a, b) {
+  if (a.paredDown < b.paredDown) {
+    return -1;
+  }
+  
+  if ( a.paredDown > b.paredDown) {
+    return 1;
+  }
+  
+  return 0;
+}
+  
+const sortedBands = sortableBands.sort(bandSort);
+  
+ sortedBands.forEach(band => console.log(band.band));
 </script>
 
 </body>
