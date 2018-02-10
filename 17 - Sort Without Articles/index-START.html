@@ -48,19 +48,18 @@
   const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
   const articles = ['the', 'an', 'a'];
-  const re = new RegExp('^(' + articles.join('|') + ') ', 'i');
+  const re = new RegExp(`^(${ articles.join('|') }) `, 'i');
     
   function bandSort(a, b) {
-    if (a.pared < b.pared) return -1;
-    if ( a.pared > b.pared) return 1;
+    if ( a.pared < b.pared ) return -1;
+    if ( a.pared > b.pared ) return 1;
     return 0;
   }
     
-  const sortedBands = bands
+  bandListElement.innerHTML = bands
     .map( name => ({ name, pared: name.replace(re, '') }) )
-    .sort(bandSort);
-    
-  bandListElement.innerHTML = sortedBands.reduce(((bandList, band) => `${bandList}<li>${band.name}</li>`), '');
+    .sort( bandSort )
+    .reduce( ((bandList, band) => `${bandList}<li>${band.name}</li>`), '' );
 </script>
 
 </body>
