@@ -182,6 +182,45 @@
     </li>
   </ul>
 <script>
+  const videoList = document.querySelector('.videos');
+
+  function addTimes(a, b) {
+    const times = [ 0, 0 ];
+
+    timeA = a.split(':');
+    timeB = b.split(':');
+
+    for (let index = 0; index < times.length; index++) {
+      timeA[index] = isNaN(parseInt(timeA[index])) ? 0 : parseInt(timeA[index]);
+      timeB[index] = isNaN(parseInt(timeB[index])) ? 0 : parseInt(timeB[index]);
+    }
+
+    for (let index = 0; index < times.length; index++) {
+      times[index] = timeA[index] + timeB[index];
+    }
+
+    let minutes = times[0];
+    let seconds = times[1];
+
+    if (seconds >= 60) {
+      let m = (seconds / 60) << 0;
+      minutes += m;
+      seconds -= (60 * m);
+    }
+
+    return `${minutes}:${ ('0' + seconds).slice(-2) }`;
+  }
+
+  // let videoTimes = [...videoList.querySelectorAll('li')].map(video => video.dataset.time); 2n
+  let runtime = Array
+    .from(
+      videoList.querySelectorAll('[data-time]'),
+      (video => video.dataset.time)
+      )
+    .reduce(
+      ((accumulator, current) => addTimes(accumulator, current)), 
+      '00:00'
+      );
 </script>
 </body>
 </html>
