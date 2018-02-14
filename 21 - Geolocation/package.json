@@ -4,10 +4,14 @@
   "description": "",
   "main": "scripts.js",
   "scripts": {
-    "start": "browser-sync start --directory --server --files \"*.css, *.html, *.js\" --https"
+    "start": "browser-sync start --config bs-config.js --directory"
   },
   "author": "",
   "license": "ISC",
+  "devSsl": {
+    "key": "C:\\OpenSSL\\server.key",
+    "crt": "C:\\OpenSSL\\server.crt"
+  },
   "devDependencies": {
     "browser-sync": "^2.12.5 <2.23.2"
   }

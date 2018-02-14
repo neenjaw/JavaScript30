@@ -13,6 +13,10 @@
     <span class="speed-value">0</span>
     <span class="units">KM/H</span>
   </h1>
+  <h1 class="heading">
+    <span class="heading-value">0</span>
+    <span class="units">deg</span>
+  </h1>
 
   <style>
     html {
@@ -58,6 +62,26 @@
     /*Compass: https://thenounproject.com/search/?q=compass&i=592352*/
   </style>
   <script>
+    if ("geolocation" in navigator) {
+        /* geolocation is available */
+        console.log('Geolocation available');
+        
+        const arrow = document.querySelector('.arrow');
+        const speed = document.querySelector('.speed-value');
+        const heading = document.querySelector('.heading-value');
+        
+        navigator.geolocation.watchPosition(data => {
+          console.log(data);
+          speed.textContent = data.coords.speed;
+          heading.textContent = data.coords.heading;
+          arrow.style.transform = `rotate(${data.coords.heading}deg)`;
+        }, (err) => {
+          alert('If Location is not enabled, this won\'t work.');
+        });
+      } else {
+        /* geolocation IS NOT available */
+        console.log('Geolocation available');
+      }
   </script>
 </body>
 </html>
