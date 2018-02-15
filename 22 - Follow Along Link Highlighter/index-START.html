@@ -27,6 +27,54 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const triggers = document.querySelectorAll('a');
+    const highlight = document.createElement('span');
+    let highlightHideTimeout = null;
+
+    highlight.classList.add('highlight');
+
+    document.body.append(highlight);
+
+    function highlightLink() {
+      const linkCoords = this.getBoundingClientRect();
+      const coords = {
+        width: linkCoords.width,
+        height: linkCoords.height,
+        top: linkCoords.top + window.scrollY,
+        left: linkCoords.left + window.scrollX,
+      };
+
+      highlight.style.width = `${coords.width}px`;
+      highlight.style.height = `${coords.height}px`;
+
+      document.documentElement.style.setProperty("--highlight", 'var(--highlight-white)');
+      highlight.classList.add('active');
+      document.documentElement.style.setProperty("--highlight-shadow", 'var(--highlight-shadow-on)');
+
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`;
+
+      if (highlightHideTimeout !== null) {
+        clearTimeout(highlightHideTimeout);
+      }
+    }
+
+    function highlightHide() {
+      if (highlightHideTimeout !== null) {
+        clearTimeout(highlightHideTimeout);
+      }
+
+      highlightHideTimeout = setTimeout(highlightHideTask, 3000);
+    }
+
+    function highlightHideTask() {
+      document.documentElement.style.setProperty("--highlight", 'var(--highlight-clear)');
+      document.documentElement.style.setProperty("--highlight-shadow", 'var(--highlight-shadow-off)');
+    }
+
+    triggers.forEach(a => {
+      a.addEventListener('mouseenter', highlightLink);
+      a.addEventListener('mouseleave', highlightHide);
+    })
   </script>
 </body>
 </html>

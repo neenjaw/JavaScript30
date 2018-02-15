@@ -1,3 +1,13 @@
+:root {
+  --highlight-clear: rgba(255,255,255,0);
+  --highlight-white: rgba(255, 255, 255, 1);
+  --highlight: var(--hightlight-clear);
+
+  --highlight-shadow-off: 0 0 0 rgba(0,0,0,0);
+  --highlight-shadow-on : 0 0 10px rgba(0, 0, 0, 0.2);
+  --highlight-shadow: var(--hightlight-shadow-off);
+}
+
 html {
   box-sizing: border-box;
 }
@@ -27,20 +37,26 @@ a {
   text-decoration: none;
   color:black;
   background:rgba(0,0,0,0.05);
-  border-radius: 20px
+  border-radius: 15px;
+  padding: 0 5px;
 }
 
 .highlight {
-  transition: all 0.2s;
-  border-bottom:2px solid white;
+  line-height: 20px;
+  display: none;
+  background: var(--highlight);
+  padding-bottom: 2px;
   position: absolute;
   top:0;
-  background:white;
   left:0;
   z-index: -1;
-  border-radius:20px;
+  border-radius:15px;
+  box-shadow: var(--highlight-shadow);
+}
+
+.highlight.active {
   display: block;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2)
+  transition: all 0.2s;  
 }
 
 .menu {
