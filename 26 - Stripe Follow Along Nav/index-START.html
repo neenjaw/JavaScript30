@@ -7,7 +7,7 @@
 <body>
   <h2>Cool</h2>
   <nav class="top">
-    <div class="dropdownBackground closed">
+    <div class="dropdownBackground">
       <span class="arrow"></span>
     </div>
 
@@ -67,10 +67,12 @@
   </nav>
 
 <style>
-  :root {
+  /* :root {
     --dropdown-left: 0;
     --dropdown-top: 0;
-  }
+    --dropdown-width: 0;
+    --dropdown-height: 0;
+  } */
 
   html {
     box-sizing: border-box;
@@ -148,14 +150,13 @@
 
 
   .dropdownBackground {
-    width:100px;
-    height:100px;
+    width: var(--dropdown-width);
+    height: var(--dropdown-height);
     position: absolute;
     background: #fff;
     border-radius: 4px;
     box-shadow: 0 50px 100px rgba(50,50,93,.1), 0 15px 35px rgba(50,50,93,.15), 0 5px 15px rgba(0,0,0,.1);
     transform-origin: 50% top;
-    transition: all 0.3s, opacity 0.1s, transform 0.2s;
     transform: rotateX(-30deg) translate(var(--dropdown-left), var(--dropdown-top));
     display: flex;
     justify-content: center;
@@ -163,12 +164,16 @@
   }
 
   .dropdownBackground.open {
+    transition: all 0.3s, opacity 0.1s, transform 0.2s;
+
+  }
+
+  .dropdownBackground.open.active {
     transform: rotateX(0deg) translate(var(--dropdown-left), var(--dropdown-top));
     opacity: 1;
   }
 
   .arrow {
-    position: absolute;
     width:20px;
     height:20px;
     display: block;
@@ -220,49 +225,8 @@
 
 </style>
 
+<script src="./follow-nav.js"></script>
 <script>
-
-const triggers = document.querySelectorAll('.cool > li');
-const background = document.querySelector('.dropdownBackground');
-const nav = document.querySelector('.top');
-
-function handleEnter() {
-  this.classList.add('trigger-enter');
-
-  setTimeout(() => this.classList.contains('trigger-enter') &&
-    this.classList.add('trigger-enter-active'), 150);
-
-  background.classList.add('open');
-
-  const dropdown = this.querySelector('.dropdown');
-
-  const dropdownCoords = dropdown.getBoundingClientRect();
-  const navCoords = nav.getBoundingClientRect();
-
-  const coords = {
-    height: dropdownCoords.height,
-    width: dropdownCoords.width,
-    top: dropdownCoords.top - navCoords.top,
-    left: dropdownCoords.left - navCoords.left
-  }
-
-  background.style.setProperty('width', `${coords.width}px`);
-  background.style.setProperty('height', `${coords.height}px`);
-  document.documentElement.style.setProperty("--dropdown-left", `${coords.left}px`);
-  document.documentElement.style.setProperty("--dropdown-top", `${coords.top}px`); 
-}
-
-function handleLeave() {
-  this.classList.remove('trigger-enter', 'trigger-enter-active');
-  background.classList.remove('open');
-}
-
-triggers.forEach(trigger => {
-  trigger.addEventListener('mouseenter', handleEnter);
-  trigger.addEventListener('mouseleave', handleLeave);
-});
-
-</script>
-
+  FollowNav.init();</script>
 </body>
 </html>
