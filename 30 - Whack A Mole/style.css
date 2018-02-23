@@ -67,3 +67,19 @@ h1 {
 .hole.up .mole {
   top:0;
 }
+
+.start {
+  display: block;
+
+  width: 300px;
+  height: 75px;
+
+  font-family: 'Amatic SC', cursive;
+  font-size: 50px;
+  font-weight: 700;
+
+  margin: 50px auto;
+
+  border: 0;
+  border-radius: 5px;
+}
